@@ -1,0 +1,146 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+    <div class="cart-container">
+        <h2>Shopping bag</h2>
+        <div class="cart-item">
+            <img src="https://via.placeholder.com/100" alt="Shirt">
+            <div class="item-details">
+                <p>Regular Fit Short-sleeved linen-blend shirt</p>
+                <p>Rs. <span class="item-price">1499.00</span></p>
+                <div class="controls">
+                    <span>Size: M</span>
+                    <div class="quantity-control">
+                        <button onclick="decreaseQty(this)">-</button>
+                        <span class="qty">1</span>
+                        <button onclick="increaseQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="remove-btn" onclick="removeItem(this)">REMOVE</button>
+            </div>
+        </div>
+        <div class="total-section">
+            <p>Order value: Rs. <span id="order-value">1499.00</span></p>
+            <p>Delivery: FREE</p>
+            <p>Total: Rs. <span id="total-amount">1499.00</span></p>
+            <button class="place-order-btn">Place to order</button>
+        </div>
+    </div>
+
+    <script src="cart.js"></script>
+</body>
+</html>
+
+    -->
+
+
+
+
+
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Shopping Cart</title>
+        <link rel="stylesheet" href="cart.css">
+    </head>
+    <body>
+      <div class="home">
+        <div class="nav">
+            <a class="name1"> SHirtly</a>
+
+            <div class="link">
+                <li><a href=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                  </svg></a></li>
+                <li><a href=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                  </svg></a></li>
+                <li><a href="cart.html"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-cart4" viewBox="0 0 16 16">
+                    <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l.5 2H5V5zM6 5v2h2V5zm3 0v2h2V5zm3 0v2h1.36l.5-2zm1.11 3H12v2h.61zM11 8H9v2h2zM8 8H6v2h2zM5 8H3.89l.5 2H5zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0"/>
+                  </svg></a></li>
+    </div>
+        <h2 class="jk">  Shopping Bag</h2>
+        <div id="cart-items"></div>
+        <div class="cart-summary">
+            <h4>Order Value: Rs. <span id="order-value">0</span></h4>
+            <h4>Delivery: FREE</h4>
+            <h4>Total: Rs. <span id="total-amount">0</span></h4>
+            <button onclick="placeOrder()">Place Order</button>
+        </div>
+    
+        <script>
+            // Load Cart Items
+            function loadCart() {
+                const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+                const cartContainer = document.getElementById('cart-items');
+                cartContainer.innerHTML = '';
+                let totalAmount = 0;
+    
+                cartItems.forEach((item, index) => {
+                    const itemTotal = item.price * item.quantity;
+                    totalAmount += itemTotal;
+                    
+                    cartContainer.innerHTML += `
+                        <div class="cart-item">
+                            <img src="${item.image}" style="width: 100px;">
+                            <div class="details">
+                                <p>${item.name}</p>
+                                <p>Size: ${item.size}</p>
+                                <p>Price: Rs. ${item.price}</p>
+                                <div>
+                                    <button onclick="changeQty(${index}, -1)">-</button>
+                                    <span>${item.quantity}</span>
+                                    <button onclick="changeQty(${index}, 1)">+</button>
+                                </div>
+                                <p>Subtotal: Rs. <span>${itemTotal}</span></p>
+                                <button onclick="removeItem(${index})">Remove</button>
+                            </div>
+                        </div>
+                        <hr>
+                    `;
+                });
+    
+                document.getElementById('order-value').innerText = totalAmount;
+                document.getElementById('total-amount').innerText = totalAmount;
+            }
+    
+            // Change Quantity
+            function changeQty(index, delta) {
+                let cart = JSON.parse(localStorage.getItem('cart'));
+                cart[index].quantity += delta;
+    
+                if (cart[index].quantity < 1) cart[index].quantity = 1; // Minimum 1 item
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+            }
+    
+            // Remove Item
+            function removeItem(index) {
+                let cart = JSON.parse(localStorage.getItem('cart'));
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+            }
+    
+            // Place Order
+            function placeOrder() {
+                alert("Order placed successfully!");
+                localStorage.removeItem('cart');
+                window.location.href = "product.html";
+            }
+    
+            // Initial Load
+            window.onload = loadCart;
+        </script>
+    </body>
+    </html>
+    
